@@ -1,0 +1,21 @@
+<p>user.del.component works!</p>
+<h2>Smazat uživatele</h2>
+
+<form (ngSubmit)="deleteUser()">
+
+  <div>
+    <label>ID uživatele:</label>
+    <input
+      type="number"
+      name="id"
+      [(ngModel)]="id"
+      required
+    >
+  </div>
+
+  <button type="submit">Smazat uživatele</button>
+
+</form>
+
+<p style="color: green" *ngIf="message">{{ message }}</p>
+<p style="color: red" *ngIf="error">{{ error }}</p>

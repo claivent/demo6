@@ -1,0 +1,40 @@
+<h2>Přidat uživatele</h2>
+
+<form (ngSubmit)="addUser()">
+
+  <div>
+    <label>ID:</label>
+    <input
+      type="number"
+      name="id"
+      [(ngModel)]="user.id"
+      required
+    >
+  </div>
+
+  <div>
+    <label>Jméno:</label>
+    <input
+      type="text"
+      name="name"
+      [(ngModel)]="user.name"
+      required
+    >
+  </div>
+
+  <div>
+    <label>Email:</label>
+    <input
+      type="email"
+      name="email"
+      [(ngModel)]="user.email"
+      required
+    >
+  </div>
+
+  <button type="submit">Přidat uživatele</button>
+
+</form>
+
+<p style="color: green" *ngIf="message">{{ message }}</p>
+<p style="color: red" *ngIf="error">{{ error }}</p>
