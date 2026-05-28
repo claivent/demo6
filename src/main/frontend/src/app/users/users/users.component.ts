@@ -19,7 +19,16 @@ export class UsersComponent implements OnInit {
 
   ngOnInit(): void{
     this.userService.getUsers().subscribe({
-      next: (data) => this.users =data,
+      next: (data) => {
+        this.users = data;
+
+        if (data.length === 0) {
+          this.error = "no users"
+        } else {
+          this.error = null ;
+        }
+      },
+
       error: () => this.error = "nestáhli se uživatelé"
     });
   }
