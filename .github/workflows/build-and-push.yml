@@ -4,7 +4,7 @@ name: Build and Push Docker Image
 on:
   push:
     branches:
-      - main       # změň na "master" pokud používáš master
+      - master       # změň na "master" pokud používáš master
 
 jobs:
   build:
