@@ -1,0 +1,39 @@
+apiVersion appsv1
+kind Deployment
+metadata
+  name demo
+spec
+  selector
+    matchLabels
+      app demo
+  template
+    metadata
+      labels
+        app demo
+    spec
+      containers
+        - name demo
+          image ghcr.ioclaiventdemodev
+          ports
+            - containerPort 8090
+          resources
+            requests
+              cpu 512m
+              memory 512Mi
+            limits
+              cpu 6000m
+              memory 4096Mi
+          readinessProbe
+            httpGet
+              path actuatorhealth
+              port 8090
+            initialDelaySeconds 45
+            periodSeconds 10
+            failureThreshold 6        # 45s + 60s = 105s total before giving up
+          livenessProbe
+            httpGet
+              path actuatorhealth
+              port 8090
+            initialDelaySeconds 90    # never kill before readiness has a chance
+            periodSeconds 20
+            failureThreshold 3
