@@ -5,7 +5,8 @@ import { UserService } from '../../../user.service';
 
 @Component({
   selector: 'app-user.del.component',
-  imports: [],
+  standalone: true,
+  imports: [FormsModule, CommonModule],
   templateUrl: './user.del.component.html',
   styleUrl: './user.del.component.css',
 })

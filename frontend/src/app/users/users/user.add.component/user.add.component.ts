@@ -7,6 +7,7 @@ import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-user.add.component',
+  standalone: true,
   imports: [FormsModule, CommonModule],
   templateUrl: './user.add.component.html',
   styleUrl: './user.add.component.css',

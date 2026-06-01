@@ -1,0 +1,58 @@
+services:
+  maven:
+    image: maven:3.9-eclipse-temurin-21
+    container_name: demo-maven
+    working_dir: /app
+    volumes:
+      - .:/app
+      - maven-repo:/root/.m2
+    ports:
+      - "8080:8080"
+    command: mvn -version
+
+
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: spring-backend
+    ports:
+      - "8080:8080"
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: angular-frontend
+    ports:
+      - "4200:4200"
+
+
+  backend-dev:
+    image: maven:3.9-eclipse-temurin-21
+    container_name: spring-backend-dev
+    working_dir: /app
+    volumes:
+      - .:/app
+      - maven-repo:/root/.m2
+    ports:
+      - "8080:8080"
+    command: mvn spring-boot:run
+
+  frontend-dev:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: angular-frontend
+    ports:
+      - "4200:4200"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    command: npm start -- --host 0.0.0.0
+    depends_on:
+      - backend-dev
+
+volumes:
+  maven-repo:
