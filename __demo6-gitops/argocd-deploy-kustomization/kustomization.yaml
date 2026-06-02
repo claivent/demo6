@@ -8,9 +8,9 @@ resources:
  
 images:
   - name: ghcr.io/claivent/demo6-backend
-    newTag: "8e74885"
+    newTag: "631b4a3"
   - name: ghcr.io/claivent/demo6-frontend
-    newTag: "8e74885"
+    newTag: "631b4a3"
 
 patches:
   - path: patch-env.yaml
