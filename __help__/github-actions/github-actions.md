@@ -6,7 +6,7 @@ Po každém `git push` do větve `main` GitHub Actions automaticky:
 1. Sestaví Docker image z `Dockerfile` v kořeni projektu
 2. Nahraje ho do GitHub Container Registry jako `ghcr.io/<username>/praxe-demo6:latest`
 
-Vše **zdarma** na GitHub Free plánu.
+Vše **zdarma** na GitHub Free plánu.aa
 
 ---
 
