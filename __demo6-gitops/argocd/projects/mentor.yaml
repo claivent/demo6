@@ -9,3 +9,20 @@ spec:
   destinations:
     - namespace: mentors
       server: https://kubernetes.default.svc
+ # Namespace je cluster-scoped zdroj — musí být v clusterResourceWhitelist
+  clusterResourceWhitelist:
+    - group: ""
+      kind: Namespace
+  namespaceResourceWhitelist:
+    - group: ""
+      kind: "*"
+    - group: "apps"
+      kind: "*"
+    - group: "batch"
+      kind: "*"
+    - group: "networking.k8s.io"
+      kind: "*"
+    - group: "traefik.io"
+      kind: "*"
+    - group: "rbac.authorization.k8s.io"
+      kind: "*"      
