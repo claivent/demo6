@@ -5,7 +5,7 @@ metadata:
   namespace: argocd
 spec:
   sourceRepos:
-    - "https://github.com/claivent/bacprac2026-app.git"
+    - "https://github.com/claivent/demo6.git"
   destinations:
     - namespace: mentors
       server: https://kubernetes.default.svc
