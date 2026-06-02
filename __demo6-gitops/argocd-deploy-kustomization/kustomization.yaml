@@ -8,7 +8,7 @@ resources:
  
 images:
   - name: ghcr.io/claivent/demo6-backend
-    newTag: "6ce7705"
+    newTag: "614847e"
   - name: ghcr.io/claivent/demo6-frontend
     newTag: "6ce7705"
 
