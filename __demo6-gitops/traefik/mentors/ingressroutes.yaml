@@ -1,0 +1,41 @@
+---
+# mentor — HTTP → HTTPS redirect
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: mentor-http
+  namespace: mentors
+spec:
+  entryPoints:
+    - web
+  routes:
+    - match: Host(`mentor.baprace.online`)
+      kind: Rule
+      middlewares:
+        - name: redirect-https
+      services:
+        - name: mentor-frontend
+          port: 80
+---
+# mentor — HTTPS frontend (Angular)
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: mentor-https
+  namespace: mentors
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`mentor.baprace.online`) && PathPrefix(`/api`)
+      kind: Rule
+      services:
+        - name: mentor-backend
+          port: 80
+    - match: Host(`mentor.baprace.online`)
+      kind: Rule
+      services:
+        - name: mentor-frontend
+          port: 80
+  tls:
+    secretName: baprace-online-tls
