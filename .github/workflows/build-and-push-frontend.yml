@@ -27,7 +27,7 @@ jobs:
         run: echo "TAG=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
 
       - name: Login to GHCR
-        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+        run: echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
       - name: Build and push image
         run: |
