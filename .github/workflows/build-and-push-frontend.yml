@@ -36,7 +36,7 @@ jobs:
 
       - name: Update kustomization image tag
         run: |
-          sed -i 's|newTag: .*|newTag: "${{ env.TAG }}"|' \
+          sed -i '/demo6-frontend/{n;s|newTag: .*|newTag: "${{ env.TAG }}"|}' \
             __demo6-gitops/argocd-deploy-kustomization/kustomization.yaml
 
       - name: Commit and push
