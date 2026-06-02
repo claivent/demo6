@@ -1,0 +1,33 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mentor-frontend
+  namespace: mentors
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mentor-frontend
+  template:
+    metadata:
+      labels:
+        app: mentor-frontend
+    spec:
+      containers:
+        - name: frontend
+          image: ghcr.io/claivent/praxe-frontend:latest
+          ports:
+            - containerPort: 4200
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mentor-frontend
+  namespace: mentors
+spec:
+  selector:
+    app: mentor-frontend
+  ports:
+    - port: 80
+      targetPort: 4200

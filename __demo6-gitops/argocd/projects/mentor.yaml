@@ -1,0 +1,11 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: mentors-demo6
+  namespace: mentors
+spec:
+  sourceRepos:
+    - "https://github.com/claivent/bacprac2026-app.git"
+  destinations:
+    - namespace: mentors
+      server: https://kubernetes.default.svc
