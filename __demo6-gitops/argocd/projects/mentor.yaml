@@ -26,3 +26,10 @@ spec:
       kind: "*"
     - group: "rbac.authorization.k8s.io"
       kind: "*"      
+ # Uživatelé projektu — svázáno s ArgoCD RBAC (viz argocd/values.yaml)
+  roles:
+    - name: developer
+      description: "Plný přístup k aplikacím v projektu mentors"
+      policies:
+        - p, proj:mentors:developer, applications, *, mentors/*, allow
+      groups: []
