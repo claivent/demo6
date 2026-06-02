@@ -10,7 +10,7 @@ images:
   - name: ghcr.io/claivent/demo6-backend
     newTag: "d8d3dd7"
   - name: ghcr.io/claivent/demo6-frontend
-    newTag: "d8d3dd7"
+    newTag: "6ce7705"
 
 patches:
   - path: patch-env.yaml
