@@ -1,5 +1,8 @@
 spring:
   application:
     name: demo6
+server:
+  port: 9111
+      
 
 
