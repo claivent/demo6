@@ -14,9 +14,11 @@ spec:
       labels:
         app: mentor-frontend
     spec:
+      imagePullSecrets:
+        - name: ghcr-pull-secret
       containers:
         - name: frontend
-          image: ghcr.io/claivent/praxe-frontend:latest
+          image: ghcr.io/claivent/demo6-frontend:latest
           ports:
             - containerPort: 4200
 ---
