@@ -4,9 +4,10 @@ name: Build and Push Docker Image
 on:
   push:
     branches:
-      - master      
+      - master
     paths:
-      - 'demo6/**'
+      - 'src/**'
+      - 'Dockerfile'
       - '.github/workflows/build-and-push.yml'
 
 concurrency:
@@ -25,29 +26,28 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Set image tag
+        run: echo "TAG=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+
       - name: Login to GHCR
         run: echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
-
       - name: Build and push image
         run: |
-          docker build -t ghcr.io/claivent/demo6:${{ env.TAG }} ./demo
-          docker push ghcr.io/claivent/demo6:${{ env.TAG }}
+          docker build -t ghcr.io/claivent/demo6-backend:${{ env.TAG }} .
+          docker push ghcr.io/claivent/demo6-backend:${{ env.TAG }}
 
       - name: Update kustomization image tag
         run: |
           sed -i 's|newTag: .*|newTag: "${{ env.TAG }}"|' \
             __demo6-gitops/argocd-deploy-kustomization/kustomization.yaml
-          sed -i 's|value: "[0-9a-f]\{7,\}"\( *# APP_VERSION\)*|value: "${{ env.TAG }}"|' \
-            __demo6-gitops/argocd-deploy-kustomization/patch-env.yaml
 
 
       - name: Commit and push
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add __demo6-gitops/argocd-deploy-kustomization/kustomization.yaml \
-                  __demo6-gitops/argocd-deploy-kustomization/patch-env.yaml
+          git add __demo6-gitops/argocd-deploy-kustomization/kustomization.yaml
           git diff --cached --quiet || git commit -m "ci: deploy demo6:${{ env.TAG }}"
           git pull --rebase origin master
           git push
