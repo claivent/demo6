@@ -2,7 +2,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
   name: mentors-demo6
-  namespace: mentors
+  namespace: argocd
 spec:
   sourceRepos:
     - "https://github.com/claivent/bacprac2026-app.git"
