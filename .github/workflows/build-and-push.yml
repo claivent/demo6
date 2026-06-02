@@ -4,35 +4,47 @@ name: Build and Push Docker Image
 on:
   push:
     branches:
-      - master       # změň na "master" pokud používáš master
+      - master      
+    paths:
+      - 'demo6/**'
+      - '.github/workflows/build-and-push.yml'
 
 jobs:
-  build:
-    runs-on: ubuntu-latest   # GitHub poskytuje runner zdarma
+  build-and-deploy:
+    runs-on: self-hosted
+    permissions:
+      contents: write
+      packages: write
 
     steps:
       # 1. Stáhni kód z repozitáře
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # 2. Přihlas se do GitHub Container Registry
-      - name: Log in to GitHub Container Registry
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}          # tvůj GitHub username
-          password: ${{ secrets.GHCR_TOKEN }}    # PAT token z Kroku 2
+      - name: Login to GHCR
+        run: echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
-      # 3. Získej krátký SHA commitu jako tag (např. "a1b2c3d")
-      - name: Set image tag
-        run: echo "TAG=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
 
-      # 4. Sestav a nahraj image
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v5
-        with:
-          context: .           # složka kde je Dockerfile (. = kořen projektu)
-          push: true
-          tags: |
-            ghcr.io/${{ github.repository_owner }}/praxe-demo6:${{ env.TAG }}
-            ghcr.io/${{ github.repository_owner }}/praxe-demo6:latest
+      - name: Build and push image
+        run: |
+          docker build -t ghcr.io/claivent/demo6:${{ env.TAG }} ./demo
+          docker push ghcr.io/claivent/demo6:${{ env.TAG }}
+
+      - name: Update kustomization image tag
+        run: |
+          sed -i 's|newTag: .*|newTag: "${{ env.TAG }}"|' \
+            __demo6-gitops/argocd-deploy-kustomization/kustomization.yaml
+          sed -i 's|value: "[0-9a-f]\{7,\}"\( *# APP_VERSION\)*|value: "${{ env.TAG }}"|' \
+            __demo6-gitops/argocd-deploy-kustomization/patch-env.yaml
+
+
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add __demo6-gitops/argocd-deploy-kustomization/kustomization.yaml \
+                  __demo6-gitops/argocd-deploy-kustomization/patch-env.yaml
+          git diff --cached --quiet || git commit -m "ci: deploy demo6:${{ env.TAG }}"
+          git pull --rebase origin master
+          git push
+

@@ -6,3 +6,12 @@ resources:
   - mentor-backend-deploy.yaml
   - mentor-frontend-deploy.yaml
  
+images:
+  - name: ghcr.io/claivent/demo6-backend
+    newTag: "2c17958"
+  - name: ghcr.io/claivent/demo6-frontend
+    newTag: "2c17958"
+
+patches:
+  - path: patch-env.yaml
+    
