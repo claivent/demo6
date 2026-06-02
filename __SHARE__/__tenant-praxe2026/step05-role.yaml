@@ -1,0 +1,26 @@
+# Role platí POUZE v namespace praxe2026.
+# Uživatelé automaticky NEMAJÍ přístup do jiných namespaců (team-a, team-b, atd.)
+# — Kubernetes RBAC je ve výchozím stavu "deny all".
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: praxe2026-developer
+  namespace: praxe2026
+rules:
+  - apiGroups: [""]
+    resources: ["pods", "pods/log", "pods/exec", "services", "endpoints",
+                 "configmaps", "secrets", "persistentvolumeclaims",
+                 "events", "resourcequotas", "limitranges"]
+    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+  - apiGroups: ["apps"]
+    resources: ["deployments", "replicasets", "statefulsets", "daemonsets"]
+    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+  - apiGroups: ["batch"]
+    resources: ["jobs", "cronjobs"]
+    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+  - apiGroups: ["networking.k8s.io"]
+    resources: ["ingresses"]
+    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+  - apiGroups: ["traefik.io"]
+    resources: ["ingressroutes", "middlewares"]
+    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]

@@ -1,0 +1,14 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - step01-namespace.yaml
+  - step02-resourcequota.yaml
+  - step03-limitrange.yaml
+  - step04-serviceaccounts.yaml
+  - step05-role.yaml
+  - step06-rolebindings.yaml
+  - step07-tokens.yaml
+  - jakub-deploy.yaml
+  - jakub-frontend-deploy.yaml
+  - dominik-deploy.yaml
