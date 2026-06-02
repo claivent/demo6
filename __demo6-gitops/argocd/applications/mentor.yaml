@@ -4,7 +4,7 @@ metadata:
   name: mentors
   namespace: argocd
 spec:
-  project: mentors-demo6
+  project: mentors
   source:
     repoURL: "https://github.com/claivent/demo6.git"
     targetRevision: master
