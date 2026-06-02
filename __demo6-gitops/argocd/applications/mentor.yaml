@@ -4,16 +4,16 @@ metadata:
   name: dominik
   namespace: argocd
 spec:
-  project: praxe2026
+  project: mentors
   source:
-    repoURL: "https://github.com/dominik-3/demo67.git"
+    repoURL: "https://github.com/claivent/demo6.git"
     targetRevision: master
-    path: __tenant-praxe2026
+    path: __demo6-gitops/argocd-deploy-kustomization/
     kustomize:
       patches: []
   destination:
     server: https://kubernetes.default.svc
-    namespace: praxe2026
+    namespace: mentors
   syncPolicy:
     automated:
       prune: true
