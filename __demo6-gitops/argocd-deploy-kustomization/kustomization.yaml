@@ -5,7 +5,11 @@ resources:
   - step01-namespace.yaml
   - mentor-backend-deploy.yaml
   - mentor-frontend-deploy.yaml
- 
+  - mysql/mysql-secret.yaml
+  - mysql/mysql-pvc.yaml
+  - mysql/mysql-configmap.yaml
+  - mysql/mysql-deploy.yaml
+
 images:
   - name: ghcr.io/claivent/demo6-backend
     newTag: "3102cbe"
