@@ -239,24 +239,128 @@ curl http://localhost:9111/api/db/users
 
 ---
 
-## Přidání nových uživatelů do databáze
+## Přidání uživatele
 
-### Lokálně
+### 1. Add — přidání uživatele
 
-```bash
-docker exec -it demo6-mysql mysql -u demo6admin -pDemo6Pass1! demo6db -e \
-  "INSERT INTO db_users (name, email) VALUES ('Nový Uživatel', 'novy@demo6.com');"
+**Endpoint:** `POST /api/db/add`
+
+**Request body (JSON):**
+```json
+{
+  "name": "David Kratochvíl",
+  "email": "david@demo6.com"
+}
 ```
 
-### V Kubernetes
-
+**Curl — lokálně:**
 ```bash
-kubectl exec -n mentors deploy/mentor-mysql -- \
-  mysql -u demo6admin -pDemo6Pass1! demo6db -e \
-  "INSERT INTO db_users (name, email) VALUES ('Nový Uživatel', 'novy@demo6.com');"
+curl -X POST http://localhost:9111/api/db/add \
+  -H "Content-Type: application/json" \
+  -d '{"name": "David Kratochvíl", "email": "david@demo6.com"}'
 ```
 
-Změny v databázi jsou trvalé díky PVC — přežijí restart podu.
+**Curl — Kubernetes:**
+```bash
+curl -X POST https://app.baprace.online/api/db/add \
+  -H "Content-Type: application/json" \
+  -d '{"name": "David Kratochvíl", "email": "david@demo6.com"}'
+```
+
+**Úspěšná odpověď (201 Created):**
+```json
+{
+  "id": 4,
+  "name": "David Kratochvíl",
+  "email": "david@demo6.com"
+}
+```
+
+`id` je přiděleno automaticky databází (AUTO_INCREMENT).
+
+---
+
+### 2. Delete — smazání uživatele
+
+**Endpoint:** `DELETE /api/db/delete/{id}`
+
+`{id}` je číselné ID uživatele z databáze.
+
+**Curl — lokálně:**
+```bash
+curl -X DELETE http://localhost:9111/api/db/delete/4
+```
+
+**Curl — Kubernetes:**
+```bash
+curl -X DELETE https://app.baprace.online/api/db/delete/4
+```
+
+**Úspěšná odpověď (200 OK):**
+```json
+{
+  "message": "User 4 deleted"
+}
+```
+
+**Pokud uživatel neexistuje (404 Not Found):**
+```json
+{
+  "error": "User 4 not found"
+}
+```
+
+Jak zjistit ID uživatele:
+```bash
+curl http://localhost:9111/api/db/users
+```
+
+---
+
+### 3. Modify — úprava uživatele
+
+**Endpoint:** `PATCH /api/db/modify/{id}`
+
+Posílají se pouze pole, která chceš změnit — ostatní zůstanou beze změny.
+
+**Curl — změnit jen jméno:**
+```bash
+curl -X PATCH http://localhost:9111/api/db/modify/1 \
+  -H "Content-Type: application/json" \
+  -d '{"name": "Alice Novotná"}'
+```
+
+**Curl — změnit jen email:**
+```bash
+curl -X PATCH http://localhost:9111/api/db/modify/1 \
+  -H "Content-Type: application/json" \
+  -d '{"email": "alice.nova@demo6.com"}'
+```
+
+**Curl — změnit obojí:**
+```bash
+curl -X PATCH http://localhost:9111/api/db/modify/1 \
+  -H "Content-Type: application/json" \
+  -d '{"name": "Alice Novotná", "email": "alice.nova@demo6.com"}'
+```
+
+**Curl — Kubernetes:**
+```bash
+curl -X PATCH https://app.baprace.online/api/db/modify/1 \
+  -H "Content-Type: application/json" \
+  -d '{"name": "Alice Novotná"}'
+```
+
+**Úspěšná odpověď (200 OK):**
+```json
+{
+  "id": 1,
+  "name": "Alice Novotná",
+  "email": "alice.nova@demo6.com"
+}
+```
+
+**Pokud uživatel neexistuje:** vrátí `404 Not Found`.
 
 ---
 
@@ -307,7 +411,10 @@ kubectl exec -n mentors deploy/mentor-mysql -- \
 
 ## Přehled endpointů
 
-| Endpoint | Zdroj dat | Popis |
+| Endpoint | Metoda | Popis |
 |---|---|---|
-| `GET /api/users` | hardcoded v kódu | 3 přednastavení uživatelé (Jan, Petra, Tomáš) |
-| `GET /api/db/users` | MySQL `db_users` | Uživatelé z databáze (Alice, Bob, Carol) |
+| `/api/users` | GET | Hardcoded uživatelé (Jan, Petra, Tomáš) |
+| `/api/db/users` | GET | Všichni uživatelé z MySQL |
+| `/api/db/add` | POST | Přidat nového uživatele |
+| `/api/db/delete/{id}` | DELETE | Smazat uživatele podle ID |
+| `/api/db/modify/{id}` | PATCH | Upravit jméno nebo email uživatele |
