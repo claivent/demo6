@@ -1,14 +1,58 @@
 <div class="card">
   <h2>Smazat uživatele</h2>
 
-  <form (ngSubmit)="deleteUser()">
-    <div class="form-group">
-      <label>ID uživatele</label>
-      <input type="number" name="id" [(ngModel)]="id" required placeholder="1">
-    </div>
-    <button type="submit" class="btn btn-danger">Smazat</button>
-  </form>
+  <button type="button" class="btn btn-danger" (click)="openList()">
+    Vybrat pro smazání
+  </button>
 
   <p class="alert alert-success" *ngIf="message">{{ message }}</p>
   <p class="alert alert-error"   *ngIf="error">{{ error }}</p>
+</div>
+
+<!-- ── Modal 1: výběr uživatele ── -->
+<div class="modal-backdrop" *ngIf="listOpen" (click)="listOpen = false"></div>
+<div class="modal" *ngIf="listOpen">
+  <div class="modal-header">
+    <span>Vyberte uživatele ke smazání</span>
+    <button class="modal-close" (click)="listOpen = false">✕</button>
+  </div>
+  <div class="modal-body">
+    <p class="status-text" *ngIf="listLoading">Načítání...</p>
+    <p class="alert alert-error" *ngIf="listError">{{ listError }}</p>
+    <table *ngIf="!listLoading && !listError">
+      <thead>
+        <tr><th>ID</th><th>Jméno</th><th>Email</th></tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of listUsers" (click)="pickUser(user)" class="modal-row">
+          <td>{{ user.id }}</td>
+          <td>{{ user.name }}</td>
+          <td>{{ user.email }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ── Modal 2: potvrzení smazání ── -->
+<div class="modal-backdrop" *ngIf="confirmOpen"></div>
+<div class="modal confirm-modal" *ngIf="confirmOpen && selected">
+  <div class="modal-header danger">
+    <span>Potvrdit smazání</span>
+  </div>
+  <div class="modal-body confirm-body">
+    <div class="user-card">
+      <div class="user-row"><span class="lbl">ID</span><span>{{ selected.id }}</span></div>
+      <div class="user-row"><span class="lbl">Jméno</span><span>{{ selected.name }}</span></div>
+      <div class="user-row"><span class="lbl">Email</span><span>{{ selected.email }}</span></div>
+    </div>
+    <p class="warning-text">
+      ⚠ Tímto uživatele trvale vymažete. Tuto akci nelze vrátit zpět.
+    </p>
+    <div class="confirm-actions">
+      <button class="btn btn-danger"   (click)="confirmDelete()">Ano — vymazat</button>
+      <button class="btn btn-neutral"  (click)="cancel()">Storno</button>
+      <button class="btn btn-select"   (click)="pickAnother()">Vybrat jiného</button>
+    </div>
+  </div>
 </div>

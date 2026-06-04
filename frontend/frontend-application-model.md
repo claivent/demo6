@@ -76,9 +76,61 @@ Singleton service (`providedIn: 'root'`). Všechna volání míří na `/api/db/
 
 ### UserDelComponent (`/user/delete`)
 
-- Formulář: ID uživatele
-- Po úspěchu zobrazí zprávu ze serveru
-- Validace: ID musí být > 0
+Komponenta používá dvoustupňový modální tok — nejdřív výběr, pak potvrzení se třemi akcemi.
+
+#### Postup
+
+```
+1. Uživatel klikne na "Vybrat pro smazání"
+        ↓
+2. Modal 1 — výběr uživatele
+   → volá UserService.getUsers() (GET /api/db/users)
+   → zobrazí tabulku uživatelů (hover červeně jako vizuální hint nebezpečí)
+        ↓
+3. Uživatel klikne na řádek
+   → Modal 1 se zavře
+   → Modal 2 se otevře — potvrzení
+        ↓
+4. Modal 2 — potvrzení smazání
+   → zobrazí: ID, Jméno, Email vybraného uživatele
+   → červené varování: "Tuto akci nelze vrátit zpět"
+   → tři tlačítka:
+       [Ano — vymazat]  → smaže uživatele, oba modály zavřeny
+       [Storno]         → zruší akci, oba modály zavřeny
+       [Vybrat jiného]  → zavře Modal 2, znovu otevře Modal 1
+```
+
+#### Stavový model komponenty
+
+| Vlastnost | Typ | Popis |
+|---|---|---|
+| `listOpen` | `boolean` | Řídí viditelnost Modalu 1 (seznam) |
+| `listUsers` | `User[]` | Uživatelé načtení pro Modal 1 |
+| `listLoading` | `boolean` | Stav načítání v Modalu 1 |
+| `listError` | `string` | Chybová zpráva v Modalu 1 |
+| `confirmOpen` | `boolean` | Řídí viditelnost Modalu 2 (potvrzení) |
+| `selected` | `User \| null` | Uživatel vybraný ke smazání |
+| `message` | `string` | Zpráva o úspěšném smazání |
+| `error` | `string` | Chybová zpráva po neúspěšném smazání |
+
+#### Metody
+
+| Metoda | Popis |
+|---|---|
+| `openList()` | Otevře Modal 1, načte uživatele, zavře Modal 2 |
+| `pickUser(user)` | Uloží vybraného uživatele, zavře Modal 1, otevře Modal 2 |
+| `confirmDelete()` | Volá `deleteUser(id)`, po úspěchu zavře Modal 2 a vyčistí stav |
+| `cancel()` | Zavře Modal 2 bez smazání |
+| `pickAnother()` | Zavře Modal 2, znovu zavolá `openList()` |
+
+#### Vizuální odlišení od Modify
+
+| Prvek | Modify | Delete |
+|---|---|---|
+| Trigger tlačítko | tmavé (`.btn-select`) | červené (`.btn-danger`) |
+| Hover v seznamu | modrý | červený |
+| Hlavička Modalu 2 | — | červená (`.danger`) |
+| Druhý modal | není | potvrzení se třemi akcemi |
 
 ### UserModifyComponent (`/user/modify`)
 
@@ -188,3 +240,4 @@ Globální CSS bez externích frameworků.
 |---|---|---|
 | 1.0.8 | 2026-06-04 | Design systém, komponenty add/delete/modify napojeny na `/api/db/*` |
 | 1.0.9 | 2026-06-04 | UserModifyComponent — modální výběr uživatele před editací |
+| 1.1.0 | 2026-06-04 | UserDelComponent — dvoustupňový modální tok: výběr + potvrzení se třemi akcemi |
