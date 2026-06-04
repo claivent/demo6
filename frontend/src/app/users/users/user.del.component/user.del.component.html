@@ -1,20 +1,14 @@
-<h2>Smazat uživatele</h2>
+<div class="card">
+  <h2>Smazat uživatele</h2>
 
-<form (ngSubmit)="deleteUser()">
+  <form (ngSubmit)="deleteUser()">
+    <div class="form-group">
+      <label>ID uživatele</label>
+      <input type="number" name="id" [(ngModel)]="id" required placeholder="1">
+    </div>
+    <button type="submit" class="btn btn-danger">Smazat</button>
+  </form>
 
-  <div>
-    <label>ID uživatele:</label>
-    <input
-      type="number"
-      name="id"
-      [(ngModel)]="id"
-      required
-    >
-  </div>
-
-  <button type="submit">Smazat uživatele</button>
-
-</form>
-
-<p style="color: green" *ngIf="message">{{ message }}</p>
-<p style="color: red" *ngIf="error">{{ error }}</p>
+  <p class="alert alert-success" *ngIf="message">{{ message }}</p>
+  <p class="alert alert-error"   *ngIf="error">{{ error }}</p>
+</div>

@@ -1,15 +1,25 @@
+<div class="card">
+  <h2>Uživatelé</h2>
 
-<h1>Studenti</h1>
+  <p class="status-text" *ngIf="loading">Načítání...</p>
+  <p class="alert alert-error" *ngIf="error">{{ error }}</p>
 
-<p *ngIf="loading">Načítání...</p>
-<p *ngIf="error" style="color: red">{{ error }}</p>
-
-<table *ngIf="!loading && !error" border="1" cellpadding="8">
-  <tbody>
-    <tr *ngFor="let user of users">
-      <td>{{ user.id }}</td>
-      <td>{{ user.name }}</td>
-      <td>{{ user.email  }}</td>
-    </tr>
-    </tbody>
-  </table>
+  <div class="table-wrapper" *ngIf="!loading && !error">
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Jméno</th>
+          <th>Email</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of users">
+          <td>{{ user.id }}</td>
+          <td>{{ user.name }}</td>
+          <td>{{ user.email }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

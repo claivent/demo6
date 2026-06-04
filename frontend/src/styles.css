@@ -1,1 +1,182 @@
-/* You can add global styles to this file, and also import other style files */
+/* ── Reset & base ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  font-size: 15px;
+  background: #f0f2f5;
+  color: #1a1a2e;
+  min-height: 100vh;
+}
+
+/* ── Top bar ── */
+.topbar {
+  background: #1a1a2e;
+  color: #fff;
+  padding: 0 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 56px;
+  box-shadow: 0 2px 8px rgba(0,0,0,.3);
+}
+
+.topbar-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: .5px;
+}
+
+.topbar-version {
+  font-size: 0.75rem;
+  color: #8892b0;
+  margin-left: .5rem;
+}
+
+/* ── Nav ── */
+nav {
+  display: flex;
+  gap: .25rem;
+}
+
+nav a {
+  color: #ccd6f6;
+  text-decoration: none;
+  padding: .4rem .9rem;
+  border-radius: 4px;
+  font-size: .875rem;
+  transition: background .15s, color .15s;
+}
+
+nav a:hover,
+nav a.active {
+  background: #ffffff22;
+  color: #fff;
+}
+
+/* ── Page content ── */
+.page {
+  max-width: 860px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+/* ── Card ── */
+.card {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0,0,0,.1);
+  padding: 1.75rem 2rem;
+}
+
+.card h2 {
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin-bottom: 1.25rem;
+  color: #1a1a2e;
+  border-bottom: 2px solid #e2e8f0;
+  padding-bottom: .6rem;
+}
+
+/* ── Form ── */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: .3rem;
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  font-size: .8rem;
+  font-weight: 600;
+  color: #4a5568;
+  text-transform: uppercase;
+  letter-spacing: .4px;
+}
+
+.form-group input {
+  border: 1px solid #cbd5e0;
+  border-radius: 5px;
+  padding: .55rem .75rem;
+  font-size: .95rem;
+  color: #1a1a2e;
+  transition: border-color .15s, box-shadow .15s;
+  outline: none;
+}
+
+.form-group input:focus {
+  border-color: #4361ee;
+  box-shadow: 0 0 0 3px rgba(67,97,238,.15);
+}
+
+/* ── Buttons ── */
+.btn {
+  display: inline-block;
+  padding: .55rem 1.3rem;
+  border: none;
+  border-radius: 5px;
+  font-size: .9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity .15s, transform .1s;
+}
+
+.btn:active { transform: scale(.98); }
+.btn:hover  { opacity: .88; }
+
+.btn-primary { background: #4361ee; color: #fff; }
+.btn-danger  { background: #e53e3e; color: #fff; }
+.btn-warning { background: #dd6b20; color: #fff; }
+
+/* ── Alerts ── */
+.alert {
+  margin-top: 1rem;
+  padding: .65rem 1rem;
+  border-radius: 5px;
+  font-size: .9rem;
+  font-weight: 500;
+}
+
+.alert-success { background: #c6f6d5; color: #276749; border-left: 4px solid #38a169; }
+.alert-error   { background: #fed7d7; color: #9b2c2c; border-left: 4px solid #e53e3e; }
+
+/* ── Table ── */
+.table-wrapper {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: .9rem;
+}
+
+thead tr {
+  background: #1a1a2e;
+  color: #ccd6f6;
+}
+
+thead th {
+  padding: .7rem 1rem;
+  text-align: left;
+  font-weight: 600;
+  font-size: .8rem;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+}
+
+tbody tr { border-bottom: 1px solid #e2e8f0; }
+tbody tr:last-child { border-bottom: none; }
+tbody tr:hover { background: #f7fafc; }
+
+tbody td {
+  padding: .65rem 1rem;
+  color: #2d3748;
+}
+
+/* ── Loading / empty ── */
+.status-text {
+  color: #718096;
+  font-size: .9rem;
+  margin-top: .5rem;
+}

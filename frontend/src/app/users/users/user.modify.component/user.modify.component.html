@@ -1,20 +1,22 @@
-<h2>Upravit uživatele</h2>
+<div class="card">
+  <h2>Upravit uživatele</h2>
 
-<form (ngSubmit)="modifyUser()">
-  <div>
-    <label>ID uživatele:</label>
-    <input type="number" name="id" [(ngModel)]="id" required>
-  </div>
-  <div>
-    <label>Nové jméno (nepovinné):</label>
-    <input type="text" name="name" [(ngModel)]="name">
-  </div>
-  <div>
-    <label>Nový email (nepovinné):</label>
-    <input type="email" name="email" [(ngModel)]="email">
-  </div>
-  <button type="submit">Uložit změny</button>
-</form>
+  <form (ngSubmit)="modifyUser()">
+    <div class="form-group">
+      <label>ID uživatele</label>
+      <input type="number" name="id" [(ngModel)]="id" required placeholder="1">
+    </div>
+    <div class="form-group">
+      <label>Nové jméno <span style="font-weight:400;text-transform:none">(nepovinné)</span></label>
+      <input type="text" name="name" [(ngModel)]="name" placeholder="Jan Novák">
+    </div>
+    <div class="form-group">
+      <label>Nový email <span style="font-weight:400;text-transform:none">(nepovinné)</span></label>
+      <input type="email" name="email" [(ngModel)]="email" placeholder="jan@example.com">
+    </div>
+    <button type="submit" class="btn btn-warning">Uložit změny</button>
+  </form>
 
-<p style="color: green" *ngIf="message">{{ message }}</p>
-<p style="color: red"   *ngIf="error">{{ error }}</p>
+  <p class="alert alert-success" *ngIf="message">{{ message }}</p>
+  <p class="alert alert-error"   *ngIf="error">{{ error }}</p>
+</div>
