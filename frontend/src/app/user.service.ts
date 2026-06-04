@@ -5,20 +5,23 @@ import { User } from './user.model';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
-  private apiUrl = '/api/users';
-  private apiUrl1 ='https://fakeapi.net/products'  ;
+  private base = '/api/db';
 
   constructor(private http: HttpClient) {}
 
   getUsers(): Observable<User[]> {
-    return this.http.get<User[]>(this.apiUrl);
+    return this.http.get<User[]>(`${this.base}/users`);
   }
 
-  addUser(user: User): Observable<User> {
-    return this.http.post<User>(this.apiUrl, user);
+  addUser(user: { name: string; email: string }): Observable<User> {
+    return this.http.post<User>(`${this.base}/add`, user);
   }
 
-  deleteUser(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  deleteUser(id: number): Observable<{ message: string }> {
+    return this.http.delete<{ message: string }>(`${this.base}/delete/${id}`);
+  }
+
+  modifyUser(id: number, patch: { name?: string; email?: string }): Observable<User> {
+    return this.http.patch<User>(`${this.base}/modify/${id}`, patch);
   }
 }
