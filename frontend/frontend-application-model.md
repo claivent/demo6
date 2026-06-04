@@ -82,9 +82,65 @@ Singleton service (`providedIn: 'root'`). Všechna volání míří na `/api/db/
 
 ### UserModifyComponent (`/user/modify`)
 
-- Formulář: ID + volitelné nové Jméno + volitelný nový Email
-- Posílá pouze vyplněná pole (prázdné pole = beze změny)
-- Validace: musí být vyplněno alespoň jedno z polí jméno/email
+Komponenta používá dvoustupňový tok: nejdřív výběr uživatele přes modální okno, pak editace formuláře.
+
+#### Postup
+
+```
+1. Uživatel klikne na "Vybrat uživatele"
+        ↓
+2. Otevře se modální okno
+   → volá UserService.getUsers() (GET /api/db/users)
+   → zobrazí tabulku všech uživatelů
+        ↓
+3. Uživatel klikne na řádek
+   → modal se zavře
+   → formulář se předvyplní: id, name, email vybraného uživatele
+   → zobrazí se badge "Vybraný uživatel: #ID"
+        ↓
+4. Uživatel upraví pole (obě nepovinná)
+   → prázdné pole = nezměněno (neposílá se)
+        ↓
+5. Odeslání formuláře
+   → volá UserService.modifyUser(id, patch) (PATCH /api/db/modify/{id})
+   → zobrazí potvrzení nebo chybu
+```
+
+#### Stavový model komponenty
+
+| Vlastnost | Typ | Popis |
+|---|---|---|
+| `id` | `number` | ID vybraného uživatele (0 = nevybráno) |
+| `name` | `string` | Předvyplněné / upravené jméno |
+| `email` | `string` | Předvyplněný / upravený email |
+| `modalOpen` | `boolean` | Řídí viditelnost modálního okna |
+| `modalUsers` | `User[]` | Seznam uživatelů načtený pro modal |
+| `modalLoading` | `boolean` | Stav načítání v modalu |
+| `modalError` | `string` | Chybová zpráva v modalu |
+| `message` | `string` | Zpráva o úspěchu formuláře |
+| `error` | `string` | Chybová zpráva formuláře |
+
+#### Metody
+
+| Metoda | Popis |
+|---|---|
+| `openModal()` | Otevře modal a načte uživatele přes `getUsers()` |
+| `selectUser(user)` | Vyplní formulář daty uživatele a zavře modal |
+| `closeModal()` | Zavře modal bez výběru (také backdrop klik) |
+| `modifyUser()` | Sestaví patch objekt a odešle PATCH request |
+
+#### Modal — chování
+
+- Otevření: tlačítko **Vybrat uživatele**
+- Zavření: klik na `✕`, klik na tmavý backdrop, nebo výběr uživatele
+- Stavy v modalu: načítání / chyba / tabulka uživatelů
+- Hover na řádku zvýrazní modrým pozadím jako vizuální hint pro kliknutí
+
+#### Validace před odesláním
+
+- `id` musí být > 0 (uživatel musí být vybrán přes modal)
+- alespoň jedno z polí (`name` nebo `email`) musí být vyplněno
+- prázdná pole se do `patch` objektu nepřidávají → backend je nezmění
 
 ---
 
@@ -117,6 +173,12 @@ Globální CSS bez externích frameworků.
 | `.table-wrapper` | Horizontální scroll pro tabulku |
 | `.alert` | Zpráva (success / error) |
 | `.status-text` | Šedý text (Načítání...) |
+| `.btn-select` | Tmavé tlačítko pro otevření modalu |
+| `.selected-badge` | Modrý odznak s ID vybraného uživatele |
+| `.modal-backdrop` | Poloprůhledné pozadí přes celou obrazovku (z-index 100) |
+| `.modal` | Bílý dialog vycentrovaný na obrazovce (z-index 101) |
+| `.modal-header` | Tmavá hlavička modalu s názvem a tlačítkem zavřít |
+| `.modal-row` | Klikatelný řádek tabulky v modalu |
 
 ---
 
@@ -125,3 +187,4 @@ Globální CSS bez externích frameworků.
 | Verze | Datum | Změna |
 |---|---|---|
 | 1.0.8 | 2026-06-04 | Design systém, komponenty add/delete/modify napojeny na `/api/db/*` |
+| 1.0.9 | 2026-06-04 | UserModifyComponent — modální výběr uživatele před editací |

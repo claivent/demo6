@@ -1,22 +1,61 @@
 <div class="card">
   <h2>Upravit uživatele</h2>
 
-  <form (ngSubmit)="modifyUser()">
+  <!-- Trigger -->
+  <button type="button" class="btn btn-select" (click)="openModal()">
+    Vybrat uživatele
+  </button>
+
+  <!-- Selected user badge -->
+  <div class="selected-badge" *ngIf="id > 0">
+    Vybraný uživatel: <strong>#{{ id }}</strong>
+  </div>
+
+  <!-- Edit form -->
+  <form (ngSubmit)="modifyUser()" *ngIf="id > 0" style="margin-top: 1.25rem">
     <div class="form-group">
-      <label>ID uživatele</label>
-      <input type="number" name="id" [(ngModel)]="id" required placeholder="1">
+      <label>Jméno</label>
+      <input type="text" name="name" [(ngModel)]="name" placeholder="Nové jméno">
     </div>
     <div class="form-group">
-      <label>Nové jméno <span style="font-weight:400;text-transform:none">(nepovinné)</span></label>
-      <input type="text" name="name" [(ngModel)]="name" placeholder="Jan Novák">
-    </div>
-    <div class="form-group">
-      <label>Nový email <span style="font-weight:400;text-transform:none">(nepovinné)</span></label>
-      <input type="email" name="email" [(ngModel)]="email" placeholder="jan@example.com">
+      <label>Email</label>
+      <input type="email" name="email" [(ngModel)]="email" placeholder="Nový email">
     </div>
     <button type="submit" class="btn btn-warning">Uložit změny</button>
   </form>
 
   <p class="alert alert-success" *ngIf="message">{{ message }}</p>
   <p class="alert alert-error"   *ngIf="error">{{ error }}</p>
+</div>
+
+<!-- Modal backdrop -->
+<div class="modal-backdrop" *ngIf="modalOpen" (click)="closeModal()"></div>
+
+<!-- Modal -->
+<div class="modal" *ngIf="modalOpen">
+  <div class="modal-header">
+    <span>Vyberte uživatele</span>
+    <button class="modal-close" (click)="closeModal()">✕</button>
+  </div>
+  <div class="modal-body">
+    <p class="status-text" *ngIf="modalLoading">Načítání...</p>
+    <p class="alert alert-error" *ngIf="modalError">{{ modalError }}</p>
+
+    <table *ngIf="!modalLoading && !modalError">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Jméno</th>
+          <th>Email</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of modalUsers" (click)="selectUser(user)" class="modal-row">
+          <td>{{ user.id }}</td>
+          <td>{{ user.name }}</td>
+          <td>{{ user.email }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
