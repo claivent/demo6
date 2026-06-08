@@ -36,6 +36,8 @@ public class DbUserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(dbUserServices.addUser(user));
     }
 
+    
+
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Map<String, String>> deleteUser(@PathVariable Long id) {
         if (!dbUserServices.deleteUser(id)) {
