@@ -12,7 +12,7 @@ resources:
 
 images:
   - name: ghcr.io/claivent/demo6-backend
-    newTag: "78aaa22"
+    newTag: "2c00797"
   - name: ghcr.io/claivent/demo6-frontend
     newTag: "a50f55d"
 
