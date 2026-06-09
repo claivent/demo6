@@ -14,7 +14,7 @@ images:
   - name: ghcr.io/claivent/demo6-backend
     newTag: "6bac1a6"
   - name: ghcr.io/claivent/demo6-frontend
-    newTag: "a50f55d"
+    newTag: "735d918"
 
 patches:
   - path: patch-env.yaml
